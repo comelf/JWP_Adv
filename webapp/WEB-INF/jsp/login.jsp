@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>회원가입</title>
+<title>로그인</title>
 </head>
 
 <body>
@@ -19,30 +19,12 @@
 					<h1>회원가입</h1>
 				</div>
 				
-				<c:choose>
-				<c:when test="${empty user.userId }">
-					<c:set var="method" value="post"/>
-				</c:when>
-				<c:otherwise>
-					<c:set var="method" value="put"/>
-				</c:otherwise>
-				</c:choose>
-				
-				
-				<form:form modelAttribute="user" cssClass="form-horizontal" action="/users" method="${method}">
+				<form:form modelAttribute="authenticate" cssClass="form-horizontal" action="/users/login" mehod="post">
 					<div class="control-group">
 						<label class="control-label" for="userId">사용자 아이디</label>
 						<div class="controls">
-						<c:choose>
-						<c:when test="${empty user.userId }">
 							<form:input path="userId"/>
 							<form:errors path="userId" cssClass="error" />
-						</c:when>
-						<c:otherwise>
-							${user.userId }
-							<form:hidden path="userId"/>
-						</c:otherwise>
-						</c:choose>
 						</div>
 					</div>
 					<div class="control-group">
@@ -52,23 +34,17 @@
 							<form:errors path="password" cssClass="error" />
 						</div>
 					</div>
-					<div class="control-group">
-						<label class="control-label" for="name">이름</label>
+					
+					<c:if test="${not empty errorMessage}">
+					<div class="control-group>
 						<div class="controls">
-							<form:input path="name"/>
-							<form:errors path="name" cssClass="error" />
+							<div class="error">${errorMessage}</div>
 						</div>
 					</div>
-					<div class="control-group">
-						<label class="control-label" for="email">이메일</label>
-						<div class="controls">
-							<form:input path="email"/>
-							<form:errors path="email" cssClass="error" />
-						</div>
-					</div>
+					</c:if>
 					<div class="control-group">
 						<div class="controls">
-							<button type="submit" class="btn btn-primary">회원가입</button>
+							<button type="submit" class="btn btn-primary">로그인</button>
 						</div>
 					</div>
 					

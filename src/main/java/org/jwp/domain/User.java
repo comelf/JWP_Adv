@@ -2,9 +2,11 @@ package org.jwp.domain;
 
 import javax.validation.constraints.Size;
 
+import org.apache.ibatis.type.Alias;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
+@Alias("user")
 public class User {
 	@NotEmpty @Size(min=4, max=12)
 	private String userId;
@@ -102,6 +104,28 @@ public class User {
 		} else if (!userId.equals(other.userId))
 			return false;
 		return true;
+	}
+
+	public boolean matchPassword(Authenticate authenticate) {
+		if ( this.password==null) {
+			return false;
+		}
+		return authenticate.matchPassword(this.password);
+	}
+
+	public boolean matchUserId(String inputUserId) {
+		if( inputUserId==null ){
+			return false;
+		}
+		return inputUserId.equals(userId);
+	}
+
+	public User update(User updateUser) {
+		if(!matchUserId(updateUser.userId)){
+			throw new IllegalArgumentException();
+		}
+			
+		return new User(this.userId, updateUser.password, updateUser.name, updateUser.email);
 	}
 	
 	
